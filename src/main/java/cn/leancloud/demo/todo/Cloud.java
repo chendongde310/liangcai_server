@@ -50,7 +50,7 @@ public class Cloud {
      * 设置用户权限
      */
     @EngineFunction("setUserACL")
-    public static void setUserACL(@EngineFunctionParam("userId") String userId) {
+    public static String setUserACL(@EngineFunctionParam("userId") String userId) {
         AVQuery<AVUser> userQuery = new AVQuery<>("_User");
         userQuery.getInBackground(userId, new GetCallback<AVUser>() {
             @Override
@@ -63,6 +63,8 @@ public class Cloud {
                 avUser.saveInBackground();// 保存
             }
         });
+
+        return "修改权限成功";
 
     }
 

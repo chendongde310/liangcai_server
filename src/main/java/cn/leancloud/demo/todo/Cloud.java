@@ -34,15 +34,15 @@ public class Cloud {
      * 签到
      */
     @EngineFunction("clock")
-    public static String clock(@EngineFunctionParam("userId") String userId) {
+    public static int clock(@EngineFunctionParam("userId") String userId) {
         if(!clockUsers.containsKey(userId)) {
             clockUsers.put(userId, 1);
             AVObject todo = AVObject.createWithoutData("_User", userId);
             todo.put("integral", todo.getInt("integral") + 1);
             todo.saveInBackground();
-            return "签到成功，积分+1";
+            return 1;
         } else {
-            return "今日你已经签过到啦";
+            return 0;
         }
     }
 

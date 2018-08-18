@@ -38,7 +38,7 @@ public class Cloud {
         if(!clockUsers.containsKey(userId)) {
             clockUsers.put(userId, 1);
             AVObject todo = AVObject.createWithoutData("_User", userId);
-            todo.put("integral", todo.getInt("integral") + 1);
+            todo.put("integral",String.valueOf( Integer.valueOf(todo.getString("integral")) + 1));
             todo.saveInBackground();
             return 1;
         } else {

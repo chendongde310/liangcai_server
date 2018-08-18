@@ -2,9 +2,7 @@ package cn.leancloud.demo.todo;
 
 import cn.leancloud.EngineFunction;
 import cn.leancloud.EngineFunctionParam;
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,6 +43,31 @@ public class Cloud {
             return 0;
         }
     }
+
+
+
+    /**
+     * 设置用户权限
+     */
+    @EngineFunction("setUserACL")
+    public static void setUserACL(@EngineFunctionParam("userId") String userId) {
+        AVQuery<AVUser> userQuery = new AVQuery<>("_User");
+        userQuery.getInBackground(userId, new GetCallback<AVUser>() {
+            @Override
+            public void done(AVUser avUser, AVException e) {
+                //新建一个 ACL 实例
+                AVACL acl = new AVACL();
+                acl.setPublicReadAccess(true);// 设置公开的「读」权限，任何人都可阅读
+                acl.setWriteAccess(AVUser.getCurrentUser(), true);// 为当前用户赋予「写」权限，有且仅有当前用户可以修改这条 Post
+                avUser.setACL(acl);// 将 ACL 实例赋予 Post对象
+                avUser.saveInBackground();// 保存
+            }
+        });
+
+    }
+
+
+
 
 
 }

@@ -58,7 +58,7 @@ public class Cloud {
                 //新建一个 ACL 实例
                 AVACL acl = new AVACL();
                 acl.setPublicReadAccess(true);// 设置公开的「读」权限，任何人都可阅读
-                acl.setWriteAccess(AVUser.getCurrentUser(), true);// 为当前用户赋予「写」权限，有且仅有当前用户可以修改这条 Post
+                acl.setWriteAccess(userId, true);// 为当前用户赋予「写」权限，有且仅有当前用户可以修改这条 Post
                 avUser.setACL(acl);// 将 ACL 实例赋予 Post对象
                 avUser.saveInBackground();// 保存
             }

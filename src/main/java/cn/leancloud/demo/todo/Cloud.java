@@ -50,21 +50,26 @@ public class Cloud {
      * 设置用户权限
      */
     @EngineFunction("setUserACL")
-    public static String setUserACL(@EngineFunctionParam("userId") String userId) {
+    public static String setUserACL(@EngineFunctionParam("userId") String userId) throws Exception {
         AVQuery<AVUser> userQuery = new AVQuery<>("_User");
-        userQuery.getInBackground(userId, new GetCallback<AVUser>() {
+        AVUser avUser = userQuery.get(userId);
+        AVACL acl = new AVACL();
+        acl.setPublicReadAccess(true);// 设置公开的「读」权限，任何人都可阅读
+        acl.setWriteAccess(userId, true);// 为当前用户赋予「写」权限，有且仅有当前用户可以修改这条 Post
+        avUser.setACL(acl);// 将 ACL 实例赋予 Post对象
+        avUser.saveInBackground(new SaveCallback() {
             @Override
-            public void done(AVUser avUser, AVException e) {
-                //新建一个 ACL 实例
-                AVACL acl = new AVACL();
-                acl.setPublicReadAccess(true);// 设置公开的「读」权限，任何人都可阅读
-                acl.setWriteAccess(userId, true);// 为当前用户赋予「写」权限，有且仅有当前用户可以修改这条 Post
-                avUser.setACL(acl);// 将 ACL 实例赋予 Post对象
-                avUser.saveInBackground();// 保存
+            public void done(AVException e) {
+                if(e != null){
+                    try {
+                        throw e;
+                    } catch (AVException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
-        });
-
-        return "修改权限成功";
+        });// 保存
+        return userId+" 修改权限成功";
 
     }
 

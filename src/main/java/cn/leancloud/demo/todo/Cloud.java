@@ -73,7 +73,18 @@ public class Cloud {
 
     }
 
+    /**
+     * 设置用户权限
+     */
+    @EngineFunction("setUserJiFen")
+    public static String setUserJiFen(@EngineFunctionParam("userId") String userId,@EngineFunctionParam("num") String num) throws Exception {
+        AVQuery<AVUser> userQuery = new AVQuery<>("_User");
+        AVUser avUser = userQuery.get(userId);
+        avUser.put("integral",num);
+        avUser.saveInBackground();
+        return userId+" 修改积分成功";
 
+    }
 
 
 

@@ -74,7 +74,7 @@ public class Cloud {
     }
 
     /**
-     * 设置用户权限
+     * 设置用户积分
      */
     @EngineFunction("setUserJiFen")
     public static String setUserJiFen(@EngineFunctionParam("userId") String userId,@EngineFunctionParam("num") String num) throws Exception {
@@ -86,6 +86,19 @@ public class Cloud {
 
     }
 
+
+    /**
+     * 设置用户设备
+     */
+    @EngineFunction("setInstallationId")
+    public static String setInstallationId(@EngineFunctionParam("userId") String userId,@EngineFunctionParam("installationId") String installationId) throws Exception {
+        AVQuery<AVUser> userQuery = new AVQuery<>("_User");
+        AVUser avUser = userQuery.get(userId);
+        avUser.put("installationId",installationId);
+        avUser.saveInBackground();
+        return userId+" 修改设备ID成功";
+
+    }
 
 
 }

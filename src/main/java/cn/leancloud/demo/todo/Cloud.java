@@ -33,17 +33,16 @@ public class Cloud {
      */
     @EngineFunction("clock")
     public static int clock(@EngineFunctionParam("userId") String userId) {
-        if(!clockUsers.containsKey(userId)) {
+        if (!clockUsers.containsKey(userId)) {
             clockUsers.put(userId, 1);
             AVObject todo = AVObject.createWithoutData("_User", userId);
-            todo.put("integral",String.valueOf( Integer.valueOf(todo.getString("integral")) + 1));
+            todo.put("integral", String.valueOf(Integer.valueOf(todo.getString("integral")) + 1));
             todo.saveInBackground();
             return 1;
         } else {
             return 0;
         }
     }
-
 
 
     /**
@@ -60,7 +59,7 @@ public class Cloud {
         avUser.saveInBackground(new SaveCallback() {
             @Override
             public void done(AVException e) {
-                if(e != null){
+                if (e != null) {
                     try {
                         throw e;
                     } catch (AVException e1) {
@@ -69,7 +68,7 @@ public class Cloud {
                 }
             }
         });// 保存
-        return userId+" 修改权限成功";
+        return userId + " 修改权限成功";
 
     }
 
@@ -77,12 +76,12 @@ public class Cloud {
      * 设置用户积分
      */
     @EngineFunction("setUserJiFen")
-    public static String setUserJiFen(@EngineFunctionParam("userId") String userId,@EngineFunctionParam("num") String num) throws Exception {
+    public static String setUserJiFen(@EngineFunctionParam("userId") String userId, @EngineFunctionParam("num") String num) throws Exception {
         AVQuery<AVUser> userQuery = new AVQuery<>("_User");
         AVUser avUser = userQuery.get(userId);
-        avUser.put("integral",num);
+        avUser.put("integral", num);
         avUser.saveInBackground();
-        return userId+" 修改积分成功";
+        return userId + " 修改积分成功";
 
     }
 
@@ -91,14 +90,16 @@ public class Cloud {
      * 设置用户设备
      */
     @EngineFunction("setInstallationId")
-    public static String setInstallationId(@EngineFunctionParam("userId") String userId,@EngineFunctionParam("installationId") String installationId) throws Exception {
+    public static String setInstallationId(@EngineFunctionParam("userId") String userId, @EngineFunctionParam("installationId") String installationId) throws Exception {
         AVQuery<AVUser> userQuery = new AVQuery<>("_User");
         AVUser avUser = userQuery.get(userId);
-        avUser.put("installationId",installationId);
+        avUser.put("installationId", installationId);
         avUser.saveInBackground();
-        return userId+" 修改设备ID成功";
+        return userId + " 修改设备ID成功";
 
     }
+
+
 
 
 }

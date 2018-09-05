@@ -3,6 +3,7 @@ package cn.leancloud.demo.todo;
 import cn.leancloud.EngineFunction;
 import cn.leancloud.EngineFunctionParam;
 import com.avos.avoscloud.*;
+import org.apache.http.util.TextUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,6 +78,9 @@ public class Cloud {
      */
     @EngineFunction("setUserJiFen")
     public static String setUserJiFen(@EngineFunctionParam("userId") String userId, @EngineFunctionParam("num") String num) throws Exception {
+        if(TextUtils.isEmpty(num)){
+            return "无效值";
+        }
         AVQuery<AVUser> userQuery = new AVQuery<>("_User");
         AVUser avUser = userQuery.get(userId);
         avUser.put("integral", num);
@@ -91,6 +95,9 @@ public class Cloud {
      */
     @EngineFunction("setInstallationId")
     public static String setInstallationId(@EngineFunctionParam("userId") String userId, @EngineFunctionParam("installationId") String installationId) throws Exception {
+        if(TextUtils.isEmpty(installationId)){
+            return "无效值";
+        }
         AVQuery<AVUser> userQuery = new AVQuery<>("_User");
         AVUser avUser = userQuery.get(userId);
         avUser.put("installationId", installationId);
